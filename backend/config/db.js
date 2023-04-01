@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
     try {
         mongoose.set('strictQuery', false);
-        mongoose.connect(process.env.MONGO_URI, console.log("Mongo est connécté"))
+        mongoose.connect(process.env.MONGO_URI, 
+            console.log("Mongo est bien loggé et connécté"))
     }
     catch (error) {
         console.log(error);
