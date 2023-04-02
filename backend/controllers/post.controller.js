@@ -9,6 +9,7 @@ module.exports.setPosts = async (req, res) => {
   if (!req.body.message) {
     res.status(400).json({ message: "Merci d'ajouter un message" });
   }
+
   const post = await PostModel.create({
     message: req.body.message,
     author: req.body.author,
@@ -18,6 +19,7 @@ module.exports.setPosts = async (req, res) => {
 
 module.exports.editPost = async (req, res) => {
   const post = await PostModel.findById(req.params.id);
+
   if (!post) {
     res.status(400).json({ message: "Ce post n'existe pas" });
   }
@@ -35,7 +37,7 @@ module.exports.deletePost = async (req, res) => {
   if (!post) {
     res.status(400).json({ message: "Ce post n'existe pas" });
   }
-  post.deleteOne({ _id: post });
+  await post.deleteOne();
   res.status(200).json("Message supprimé " + req.params.id);
 };
 
@@ -46,8 +48,8 @@ module.exports.likePost = async (req, res) => {
       { $addToSet: { likers: req.body.userId } },
       { new: true }
     ).then((data) => res.status(200).send(data));
-  } catch (error) {
-    res.status(400).json(error);
+  } catch (err) {
+    res.status(400).json(err);
   }
 };
 
